@@ -1,2 +1,0 @@
-# yangha.github.com
-blog

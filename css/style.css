@@ -34,6 +34,10 @@ ul, li, ol {
 h1, h2, h3, h4 {
     font-weight: 400;
 }
+.page-life, .page-code {
+    max-width: 600px;
+    margin: 0 auto;
+}
 .page-code {
     max-width: 600px;
 }

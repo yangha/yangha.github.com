@@ -1,0 +1,128 @@
+/*! Color themes for Google Code Prettify | MIT License | github.com/jmblog/color-themes-for-google-code-prettify */
+.highlight {
+  background: #2d2d2d;
+  font-family: Menlo,Bitstream Vera Sans Mono,DejaVu Sans Mono,Monaco,Consolas,monospace;
+  border: 0 !important;
+  font-size: .12rem;
+  width: 100% !important;
+  padding: 10px 15px;
+  border-radius: 0;
+  box-sizing: border-box;
+  color: #ccc;
+}
+code, kbd, pre, samp {
+    font-family: Menlo,Bitstream Vera Sans Mono,DejaVu Sans Mono,Monaco,Consolas,monospace;
+    max-width: 100%;
+}
+.params {
+  color: #cccccc;
+}
+
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #999999;
+}
+
+li.L0,
+li.L1,
+li.L2,
+li.L3,
+li.L4,
+li.L5,
+li.L6,
+li.L7,
+li.L8,
+li.L9 {
+  padding-left: 1em;
+  background-color: #2d2d2d;
+  list-style-type: decimal;
+}
+
+@media screen {
+
+  /* string content */
+
+  .string {
+    color: #99cc99;
+  }
+
+  /* keyword */
+
+  .keyword {
+    color: #cc99cc;
+  }
+
+  /* comment */
+
+  .comment {
+    color: #999999;
+  }
+
+  /* type name */
+
+  .type {
+    color: #6699cc;
+  }
+
+  /* literal value */
+
+  .number {
+    color: #f99157;
+  }
+
+  /* punctuation */
+
+  .pun {
+    color: #cccccc;
+  }
+
+  /* lisp open bracket */
+
+  .opn {
+    color: #cccccc;
+  }
+
+  /* lisp close bracket */
+
+  .clo {
+    color: #cccccc;
+  }
+
+  /* markup tag name */
+
+  .tag {
+    color: #f2777a;
+  }
+
+  /* markup attribute name */
+
+  .atn {
+    color: #f99157;
+  }
+
+  /* markup attribute value */
+
+  .atv {
+    color: #66cccc;
+  }
+
+  /* declaration */
+
+  .dec {
+    color: #f99157;
+  }
+
+  /* variable name */
+
+  .var {
+    color: #f2777a;
+  }
+
+  /* function name */
+
+  .function {
+    color: #6699cc;
+  }
+}

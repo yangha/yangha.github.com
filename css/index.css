@@ -1,0 +1,231 @@
+* {margin: 0; padding: 0; -webkit-tap-highlight-color: rgba(0,0,0,0); max-width: 100%;}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+}
+body {
+    background-color: #fff;
+    font-size: 16px;
+    color: #3e3e3e;
+    font-family: -apple-system-font,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+.main__content {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 70%;
+    /*padding: 20px;*/
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+.main__content.switch {
+    background-image: url(../images/it-is-me.jpg);
+    background-size: cover;
+    background-position: center;
+    -webkit-animation: scaleIn 400ms ease;
+    -o-animation: scaleIn 400ms ease;
+    animation: scaleIn 400ms ease;
+}
+.main__content.switch::before {
+    content: '「 我是皮皮阳 」';
+    position: absolute;
+    top: 50%;
+    color: #FFF;
+    font-size: 2em;
+    text-align: center;
+    display: block;
+    width: 100%;
+    height: 70%;
+}
+.main__content.switch::after {
+    display: block;
+    width: 100%;
+    height: 100%;
+    content: '';
+    background-color: rgba(0,0,0,.55);
+}
+.camera {
+    width: 320px;
+    height: 320px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%) scale(.95);
+    transform: translate(-50%, -50%) scale(.95);
+}
+.camera path:not(.focus) {
+    stroke-dasharray: 500;
+    stroke-dashoffset: 500;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    animation: dash 6s linear forwards;
+    stroke-width: 1;
+}
+.camera path.focus {
+    transform-origin: center;
+    opacity: 0;
+    animation: zoomIn 300ms ease 1s forwards;
+}
+@-webkit-keyframes dash {
+    to {
+        stroke-dashoffset: 0
+    }
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0
+    }
+}
+@-webkit-keyframes zoomIn {
+    0% {
+        -webkit-transform: scale(1.8175)
+    }
+    100% {
+        -webkit-transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    0% {
+        transform: scale(1.8175)
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+.footer__content {
+    height: 30%;
+    width: 100%;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+}
+.flexbox {
+    display: -webkit-box;
+    display: flex;
+}
+.flex--algn-center {
+    -webkit-box-align: center;
+    align-items: center;
+}
+.flex--justify-center {
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+.flex__main {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+a {
+    text-decoration: none;
+    color: #333;
+}
+a:active {
+    color: #CE2323;
+}
+ul, li, ol {
+    list-style: none;
+}
+h1, h2, h3, h4 {
+    font-weight: 400;
+}
+img {
+    border: 0;
+    display: block;
+    max-width: 100%;
+    margin: 10px auto 0;
+}
+.code, .life {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.footer__item {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: block;
+    margin: auto;
+    color: #000;
+}
+.footer__item:active {
+    border-radius: 6px;
+    background-color: #CE2323;
+    color: #fff;
+}
+.footer__item i {
+    font-size: 20px;
+}
+.me {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.me__img_wrap {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    box-shadow: 0 0 0 3px #000,0 0 0 5px #fff;
+    overflow: hidden;
+}
+.me__img_wrap img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+.me__img_wrap:active {
+    box-shadow: 0 0 0 3px #000,0 0 0 6px #CE2323;
+}
+.photo {
+    -webkit-animation: shink 1s ease;
+    animation: shink 1s ease;
+}
+@-webkit-keyframes shink {
+    0% {
+        opacity: 0
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes shink {
+    0% {
+        opacity: 0
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes scaleIn {
+    0% {
+        -webkit-transform: scale(0)
+    }
+    100% {
+        -webkit-transform: scale(1);
+    }
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0)
+    }
+    100% {
+        transform: scale(1);
+    }
+}

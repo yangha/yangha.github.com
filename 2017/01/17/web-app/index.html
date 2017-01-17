@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+        <title>企鹅拼车web app实践 | 阳</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="/css/code-night.css" type="text/css">
+        <link rel="stylesheet" href="/css/style.css" type="text/css">
+        <link rel="stylesheet" href="/fonts/iconfont.css" type="text/css">
+        <script type="text/javascript">
+        //rem lay out
+        function refreshRem(){var e=docEl.getBoundingClientRect().width;e>500&&(e=500),e<320&&(e=320);var t=e/320*100;docEl.style.fontSize=t+"px"}var doc=window.document,docEl=doc.documentElement,tid,resizeEvt="orientationchange"in window?"orientationchange":"resize",orgFlag=!1,attendeeFlag=!1;window.addEventListener(resizeEvt,function(){clearTimeout(tid),tid=setTimeout(refreshRem,300)},!1),window.addEventListener("pageshow",function(e){e.persisted&&(clearTimeout(tid),tid=setTimeout(refreshRem,300))},!1),refreshRem();
+        </script>
+    </head>
+    <body>
+
+<article class="page-code">
+    <div class="page-title">
+        <h1>企鹅拼车web app实践</h1>
+    </div>
+    <blockquote>
+<p>从需求提出到项目交付，我们只用了不到一个月时间完成企鹅拼车web app的开发</p>
+</blockquote>
+<p>我们没有动辄上百万上千万的用户访问量，执着于内部应用小而美的追求，在快速迭代和用户体验之间，打磨着自己的最佳实践。</p>
+<p>在项目的实践中，要不断考虑到团队因素和代码复用因素，一些经过实践的准则或方法理应作为团队的开发规范。</p>
+<p>话不多说，本文纯粹从工程和项目实践角度总结企鹅拼车web app的开发历程。</p>
+<h3 id="u6280_u672F_u9009_u578B"><a href="#u6280_u672F_u9009_u578B" class="headerlink" title="技术选型"></a>技术选型</h3><blockquote>
+<p>技术选型综合团队的学习成本以及技术积累</p>
+</blockquote>
+<p>在我们过往web app的积累之上，我们选择<code>vue2.0</code> 及其相应生态链<br>以取得更好的编码体验和性能提升</p>
+<h3 id="u9879_u76EE_u6784_u5EFA_u53CA_u76F8_u5173_u89C4_u8303"><a href="#u9879_u76EE_u6784_u5EFA_u53CA_u76F8_u5173_u89C4_u8303" class="headerlink" title="项目构建及相关规范"></a>项目构建及相关规范</h3><blockquote>
+<p>从项目开始之初就应该想清楚开发、测试和发布的一体化</p>
+</blockquote>
+<p>既然用了<code>vue2.0</code>来做技术选型，构建工具当然首推<code>vue-cli</code>，在此基础上，我们对基本配置稍加改动，符合团队的项目构建习惯。</p>
+<ul>
+<li><p><strong>代码风格统一规范：</strong> <code>eslint</code><br>继承目前流行的编码方式和习惯<br>2个空格缩进，函数大括号前加空格<br>所有函数名和变量使用驼峰命名法<br>不使用分号<br>这里需要注意的是： 有些规则不必完全按照<code>eslint</code>的默认配置，如果需要修改，将<code>eslint</code>报错的类型在<code>rule</code>里面做相应的设置<br>企鹅拼车相关的<code>eslint</code>配置如下</p>
+<figure class="highlight scala"><table><tr><td class="code"><pre><span class="line"><span class="comment">// allow paren-less arrow functions</span></span><br><span class="line"><span class="symbol">'arrow</span>-parens': <span class="number">0</span>,</span><br><span class="line"><span class="comment">// allow async-await</span></span><br><span class="line"><span class="symbol">'generator</span>-star-spacing': <span class="number">0</span>,</span><br><span class="line"><span class="comment">// 允许函数名之后不空格</span></span><br><span class="line"><span class="symbol">'space</span>-before-function-paren': <span class="number">0</span>,</span><br><span class="line"><span class="comment">// 可以使用new直接初始化对象</span></span><br><span class="line"><span class="symbol">'no</span>-<span class="keyword">new</span>': <span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>css编写工具：</strong><code>stylus</code><br>选择    <code>stylus</code>是因为兼具<code>sass</code>和<code>less</code>的优势，同时，代码风格兼容，不会出现太多差错</p>
+<blockquote>
+<p>注：在单个vue文件里使用<code>stylus</code>需要声明<code>lang</code>类型</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">style</span> <span class="attribute">lang</span>=<span class="value">"stylus"</span>&gt;</span><span class="css"></span><br><span class="line"><span class="comment">/* your style code here */</span></span><br><span class="line"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>此外，需要特别注意<code>webpack</code>配置文件里需要对<code>css3</code>属性做浏览器兼容性处理，默认配置需要改动，否则可能出现无效的情况<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="tag">vue</span>: <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">postcss</span>:<span class="value"> [</span><br><span class="line">    <span class="function">require</span>(<span class="string">'autoprefixer'</span>)(&#123;</span><br><span class="line">      browsers: [<span class="string">'last 7 versions'</span>] <span class="comment">/* 7很关键 */</span></span><br><span class="line">    </span></span></span>&#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<ul>
+<li><strong>JS编写工具：</strong> <code>ES6</code><br>这么好用的工具不用有点暴殄天物呀！！！<br>当然不要滥用语法糖，这里主要使用<code>箭头函数</code>和<code>解构函数</code>，以及部分<code>Array</code>的处理函数</li>
+</ul>
+<blockquote>
+<p>好的架构不是YY出来的，是实践出来的</p>
+</blockquote>
+<h3 id="SPA_u8DEF_u7531"><a href="#SPA_u8DEF_u7531" class="headerlink" title="SPA路由"></a>SPA路由</h3><blockquote>
+<p>web app实现单页切换的基础</p>
+</blockquote>
+<p>原理是利用<code>hash change</code>或者<code>h5</code>的<code>pushState API</code>，在改变<code>URL</code>的情况下页面并非发生真正的跳转，而是相关的<code>DOM</code>元素进行切换。</p>
+<p>最佳实践的路由理应是能够支持子路由切换的<code>（后面会讲到）</code>，这里选择官方的<code>vue-router</code>能够满足我们的需求。<br>同时，<code>vue-router</code>将指令无缝整合进<code>vue</code>，能够体会到开发的便利。</p>
+<p>我在项目中为了能够更方便的使用路由配置，最好是能够像写<code>JSON</code>一样写路由，于是有了如下方式：<br><figure class="highlight roboconf"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> routerConfig from './router.config.json'</span><br><span class="line"></span><br><span class="line"><span class="component">const childMap = (children) =&gt; &#123;</span><br><span class="line"> let childArr = []</span><br><span class="line"> <span class="keyword">children</span><span class="string">.map(child</span> =&gt; &#123;</span><br><span class="line">   childArr<span class="string">.push(&#123;</span></span><br><span class="line">     path: child<span class="string">.path</span>,</span><br><span class="line">     name: child<span class="string">.name</span>,</span><br><span class="line">     component: require(`./components$&#123;child<span class="string">.dir&#125;`)</span>,</span><br><span class="line">     <span class="keyword">children</span>: child<span class="string">.children</span> ? childMap(child<span class="string">.children)</span> : []</span><br><span class="line">   &#125;</span>)</span><br><span class="line"> &#125;)</span><br><span class="line"> return childArr</span><br><span class="line">&#125;</span><br><span class="line">let routerArr = []</span><br><span class="line"><span class="component">routerConfig.map(config =&gt; &#123;</span><br><span class="line"> routerArr<span class="string">.push(&#123;</span></span><br><span class="line">   path: config<span class="string">.path</span>,</span><br><span class="line">   name: config<span class="string">.name</span>,</span><br><span class="line">   component: require(`./components$&#123;config<span class="string">.dir&#125;`)</span>,</span><br><span class="line">   <span class="keyword">children</span>: config<span class="string">.children</span> ? childMap(config<span class="string">.children)</span> : []</span><br><span class="line"> &#125;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">const route = routerArr</span><br><span class="line">export default route</span><br></pre></td></tr></table></figure></p>
+<p>所以每次需要增删改路由的时候，仅仅只需要修改配置文件即可，很方便有木有^_^<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/* 路由配置文件 */</span><br><span class="line">&#123;</span><br><span class="line"> "title": "首页",</span><br><span class="line">  "path": "/",</span><br><span class="line">  "name": "index",</span><br><span class="line">  "dir": "/home/index",</span><br><span class="line">  "children": [</span><br><span class="line">    &#123;</span><br><span class="line">      "title": "A模块",</span><br><span class="line">      "path": "/home/A",</span><br><span class="line">      "name": "A",</span><br><span class="line">      "dir": "/home/A"</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="http_u8BF7_u6C42"><a href="#http_u8BF7_u6C42" class="headerlink" title="http请求"></a>http请求</h3><blockquote>
+<p>用于<code>AJAX</code>进行异步请求</p>
+</blockquote>
+<p>我们仍然选择了<code>vue</code>社区的<code>vue-resource</code>，这里可以自由选择<code>AJAX</code>工具，如<code>zepto</code>或者<code>fetch api</code>都是可以的。</p>
+<p>同时，需要使用<code>promise</code>来解决回调地狱的问题，这企鹅拼车项目中，我们将<code>api</code>相关接口单独封装起来，方便到处调用。<br><figure class="highlight zephir"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* api.js */</span></span><br><span class="line"><span class="keyword">var</span> Vue = <span class="keyword">require</span>(<span class="string">'vue'</span>)</span><br><span class="line"><span class="keyword">var</span> VueResource = <span class="keyword">require</span>(<span class="string">'vue-resource'</span>)</span><br><span class="line">Vue.<span class="keyword">use</span>(VueResource)</span><br><span class="line">Vue.http.options.emulateJSON = <span class="keyword">true</span></span><br><span class="line">Vue.http.options.emulateHTTP = <span class="keyword">true</span></span><br><span class="line"><span class="keyword">const</span> fetchApi = window.appconfig.api</span><br><span class="line"><span class="keyword">const</span> IS_DEV = window.appconfig.IS_DEV</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 获取人员信息</span><br><span class="line"> * <span class="doctag">@param</span> rtx 人员名</span><br><span class="line"> */</span></span><br><span class="line">export <span class="function"><span class="keyword">function</span> <span class="title">getUserInfo</span><span class="params">(&#123;</span><br><span class="line">  rtx</span><br><span class="line">&#125;)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> userApi = fetchApi + <span class="string">'userinfo/get?rtx='</span> + rtx</span><br><span class="line">  <span class="keyword">if</span> (!IS_DEV) &#123;</span><br><span class="line">    userApi = fetchApi + <span class="string">'?route=userinfo/get&amp;rtx='</span> + rtx</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> promise = <span class="keyword">new</span> Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">    Vue.http.jsonp(userApi).then((response) =&gt; &#123;</span><br><span class="line">      resolve(response.body)</span><br><span class="line">    &#125;, (error) =&gt; &#123;</span><br><span class="line">      reject(error)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> promise</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="u7EC4_u4EF6_u5316_u5F00_u53D1_u6A21_u5F0F"><a href="#u7EC4_u4EF6_u5316_u5F00_u53D1_u6A21_u5F0F" class="headerlink" title="组件化开发模式"></a>组件化开发模式</h3><blockquote>
+<p>UI组件化及业务组件化</p>
+</blockquote>
+<p>本质是为了提高代码复用率，形成统一的代码规范和UI风格。</p>
+<ul>
+<li><p><strong>UI组件化</strong><br>  在以往项目的经验中，我累积了一套基于<code>Vue</code>的<code>UI</code>风格组件 —— <code>xzUI</code>，并带有强烈的行政<code>科技蓝</code>的风格，同时遵循<code>weUI</code>的设计规范，包含十几个常用的UI组件，并在不断完善中。目前已经能够满足日常开发的组件功能需求。</p>
+</li>
+<li><p><strong>业务组件化</strong><br>  在组件化的开发模式中，一定要注意UI组件和业务组件的分离，UI组件的设计也一定要避免业务逻辑的关联。</p>
+<p>  业务组件方便在一个具体项目中的代码复用甚至页面复用，它与你当前的项目具有强关联性。同时业务组件化也能够减少打包后的代码体积。</p>
+<p>  配合<code>vue-cli</code>和<code>vue-loader</code>，很方便的采用单文件的编写方式<br><img src="/images/post/1484384594698.png" alt="vue单文件书写"><em>vue单文件书写</em></p>
+</li>
+</ul>
+<h3 id="u72B6_u6001_u7BA1_u7406_u65B9_u6848"><a href="#u72B6_u6001_u7BA1_u7406_u65B9_u6848" class="headerlink" title="状态管理方案"></a>状态管理方案</h3><blockquote>
+<p>组件化的方式必定会带来状态管理和共享的问题</p>
+</blockquote>
+<p>非父子组件之间的通信是困难的，由于本身的项目不算过大和过于复杂，并用不到<code>vuex</code>和<code>flux</code>等解决方案框架，我们在这里采用<code>vue</code>作者推荐的<code>eventBus</code>解决方案</p>
+<p><code>event bus</code>方案是基于一个实例化的<code>Vue</code>对象来实现变量以及方法和事件的共享。那么在单文件和路由的背景下应该这么来使用：<br><figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* eventBus.js */</span></span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  <span class="attribute">data</span>: &#123;</span><br><span class="line">    <span class="comment">/* your data */</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>调用<br><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* A.vue*/</span></span><br><span class="line"><span class="keyword">import</span> Bus <span class="keyword">from</span> <span class="string">'eventBus'</span></span><br><span class="line">export default &#123;</span><br><span class="line">  created() &#123;</span><br><span class="line">	Bus.$on(<span class="string">'event-type'</span>, handler)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* B.vue */</span></span><br><span class="line"><span class="keyword">import</span> Bus <span class="keyword">from</span> <span class="string">'eventBus'</span></span><br><span class="line">export default &#123;</span><br><span class="line">  methods:&#123;</span><br><span class="line">	handleClick() &#123;</span><br><span class="line">	  Bus.$emit(<span class="string">'event-type'</span>, data)</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="web_app_u9875_u9762_u5E03_u5C40_u53CA_u6570_u636E_u5237_u65B0_u65B9_u6848"><a href="#web_app_u9875_u9762_u5E03_u5C40_u53CA_u6570_u636E_u5237_u65B0_u65B9_u6848" class="headerlink" title="web app页面布局及数据刷新方案"></a>web app页面布局及数据刷新方案</h3><blockquote>
+<p>web app模拟原生app的数据刷新方案</p>
+</blockquote>
+<p>随着移动端设备的更新换代，目前来讲基本不会再采用<code>IScroll</code>这种技术方案了。取而代之的是div局部滚动和<code>-webkit-overflow-scrolling: touch</code>方案，这对于移动端性能提升和提高用户体验甚为关键。</p>
+<p>同时，由于微信等超级app里面的webview默认样式无法去除，因此采用局部滚动方案也更方便做页面的转场动画以及实现上拉下拉数据刷新</p>
+<p>这里提到很重要的一个组件： 下拉刷新(pull refresh)和无限滚动(infinite scroll)<br>具体实现在这里不作展开，但是无限滚动列表和详情页之间的切换一直以来都是一个比较棘手的问题，通过div弹层或者路由跳转其实都不是很好的解决方案。</p>
+<ul>
+<li><p><em>div弹层方案</em><br>优点：方面从详情页切换回列表页，并定位至上一次浏览位置<br>缺点： 不支持历史记录，容易造成误按返回键内容丢失的问题</p>
+</li>
+<li><p><em>路由跳转方案</em><br>优点： 产生历史记录，方便返回<br>缺点： 不能记住浏览位置</p>
+</li>
+</ul>
+<p>这期间我也思考过其他的实现方式，包括利用<code>storage</code>缓存历史浏览数据和位置，但体验总是不流畅。</p>
+<p>在企鹅拼车项目的时候，我是采用子路由的方式来规避这个问题，详情页交给子路由处理，同时，子路由采用<code>fixed</code>布局方案。</p>
+<h3 id="u7ED3_u8BED"><a href="#u7ED3_u8BED" class="headerlink" title="结语"></a>结语</h3><p>以上是我再企鹅拼车项目中的一个实践经验，至于具体<code>UI</code>组件编写所遇到的问题，以后会另开文章剖析，限于作者水平有限，不当之处方便指出和交流。</p>
+<blockquote>
+<p>附上<code>xzUI</code>的体验二维码<br><img src="/images/post/1484530758488.png" alt="xzUI 二维码"></p>
+</blockquote>
+
+</article>
+<hr>
+<div class="post-meta">
+    2017年01月17日
+</div>
+<div class="code-article-tools page-menu">
+    <a class="go-code" href="/code/">
+        <i class="iconfont icon-code"></i>
+    </a>
+</div>
+    <script type="text/javascript" src="https://cdnjs.gtimg.com/cdnjs/libs/zepto/1.1.4/zepto.min.js"></script>
+    <script type="text/javascript" src="/js/WeixinApi.js"></script>
+    <script type="text/javascript" src="/js/fastclick.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+    </body>
+</html>
+

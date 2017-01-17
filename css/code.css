@@ -1,5 +1,5 @@
 /*! Color themes for Google Code Prettify | MIT License | github.com/jmblog/color-themes-for-google-code-prettify */
-.highlight {
+.highlight, .highlight .code, .highlight pre {
   font-family: Menlo,Bitstream Vera Sans Mono,DejaVu Sans Mono,Monaco,Consolas,monospace;
   border: 0 !important;
   font-size: .12rem;
@@ -17,6 +17,8 @@
 code, kbd, pre, samp {
     font-family: Menlo,Bitstream Vera Sans Mono,DejaVu Sans Mono,Monaco,Consolas,monospace;
     max-width: 100%;
+    box-sizing: border-box;
+    display: block;
 }
 .highlight pre{
     white-space: pre-wrap;
